@@ -66,3 +66,8 @@ brew install --cask spotify
 
 echo "Setting up oh-my-zsh"
 $(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)
+
+echo "Pulling in dotfiles"
+git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marquessv/.dotfiles.git tmpdotfiles
+rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/
+rm -r tmpdotfiles
