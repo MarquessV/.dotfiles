@@ -1,0 +1,413 @@
+{
+  "reactNativeComponent": {
+    "prefix": "rnc",
+    "body": [
+      "import React from 'react';",
+      "import { View, Text } from 'react-native';",
+      "",
+      "export const ${1:${TM_FILENAME_BASE}} = (${2:$TM_FILENAME_BASE}) => {",
+      "    return (",
+      "      <View>",
+      "        <Text> ${1:${TM_FILENAME_BASE}} </Text>",
+      "      </View>",
+      "    );",
+      "};",
+      "",
+      "${1:${TM_FILENAME_BASE}}.propTypes = {};",
+      "",
+      "export default ${1:${TM_FILENAME_BASE}};",
+      ""
+    ],
+    "description": "React Native Component"
+  },
+  "reactNativePureComponent": {
+    "prefix": "rnpc",
+    "body": [
+      "import React from 'react';",
+      "import { View, Text } from 'react-native';",
+      "",
+      "export const ${1:${TM_FILENAME_BASE}} = (${2:$TM_FILENAME_BASE}) => {",
+      "    return (",
+      "      <View>",
+      "        <Text> ${1:${TM_FILENAME_BASE}} </Text>",
+      "      </View>",
+      "    );",
+      "};",
+      "",
+      "${1:${TM_FILENAME_BASE}}.propTypes = {};",
+      "",
+      "export default React.memo(${1:${TM_FILENAME_BASE}});",
+      ""
+    ],
+    "description": "React Native Pure (memoized) Component"
+  },
+
+  "style={...}": {
+    "prefix": "sty",
+    "body": "style={[${1}]}",
+    "description": "styleProps"
+  },
+  "import": {
+    "prefix": "imp",
+    "body": "import ${2:moduleName} from '${1:module}';$0"
+  },
+  "importEverything": {
+    "prefix": "ime",
+    "body": "import * as ${2:alias} from '${1:module}';$0"
+  },
+   "importDestructing": {
+    "prefix": "imd",
+    "body": "import { $2 } from '${1:module}';$0"
+  },
+    "exportDefault": {
+    "prefix": "exp",
+    "body": "export default $1$0"
+  },
+  "exportDestructing": {
+    "prefix": "exd",
+    "body": "export { $2 } from '${1:module}';$0"
+  },
+  "exportAs": {
+    "prefix": "exa",
+    "body": "export { ${2:originalName} as ${3:alias} } from '${1:module}';$0"
+  },
+  "exportNamedFunction": {
+    "prefix": "enf",
+    "body": [
+      "export const ${1:functionName} = (${2:params}) => {",
+      "  $0",
+      "};",
+      ";"
+    ],
+    "description": "Export named function in ES7 syntax"
+  },
+  "exportDefaultFunction": {
+    "prefix": "edf",
+    "body": [
+      "export default (${1:params}) => {",
+      "  $0",
+      "};",
+      ""
+    ],
+    "description": "Export default function in ES7 syntax"
+  },
+  "method": {
+    "prefix": "met",
+    "body": [
+      "${1:methodName} = (${2:params}) => {",
+      "  ${0};",
+      "};",
+      ""
+    ],
+    "description": "Creates a method inside a class in ES7 syntax"
+  },
+    "forEach": {
+    "prefix": "fre",
+    "body": [
+      "${1:array}.forEach(${2:currentItem} => {",
+      "  ${0}",
+      "})",
+      ""
+    ],
+    "description": "Creates a forEach statement in ES7 syntax"
+  },
+  "forOf": {
+    "prefix": "fof",
+    "body": [
+      "for(let ${1:item} of ${2:object}) {",
+      "  ${0}",
+      "}",
+      ""
+    ],
+    "description": "Iterating over property names of iterable objects"
+  },
+  "forIn": {
+    "prefix": "fin",
+    "body": [
+      "for(let ${1:item} in ${2:object}) {",
+      "  ${0}",
+      "}",
+      ""
+    ],
+    "description": "Iterating over property values of iterable objects"
+  },
+  "anonymousFunction": {
+    "prefix": "anfn",
+    "body": [
+      "(${1:params}) => {",
+      "  ${2}",
+      "}",
+      ""
+    ],
+    "description": "Creates an anonymous function in ES7 syntax"
+  },
+  "namedFunction": {
+    "prefix": "nfn",
+    "body": [
+      "const ${1:name} = (${2:params}) => {",
+      "  ${3}",
+      "}",
+      ""
+    ],
+    "description": "Creates a named function in ES7 syntax"
+  },
+    "destructingObject": {
+    "prefix": "dob",
+    "body": "const {${1:propertyName}} = ${2:objectToDestruct}",
+    "description": "Creates and assigns a local variable using object destructing"
+  },
+  "destructingArray": {
+    "prefix": "dar",
+    "body": "const [${1:propertyName}] = ${2:arrayToDestruct};",
+    "description": "Creates and assigns a local variable using array destructing"
+  },
+    "ImportPropTypes": {
+    "prefix": "ipt",
+    "body": "import PropTypes from 'prop-types';",
+    "description": "import PropTypes from 'prop-types';"
+  },
+  "PropTypes": {
+    "prefix": "pt",
+    "body": [
+      "${1}.propTypes = {",
+      "",
+      "};"
+    ],
+    "description": "Create PropTypes"
+  },
+  "defaultProps": {
+    "prefix": "dfp",
+    "body": [
+      "${1}.defaultProps = {",
+      "",
+      "};"
+    ],
+    "description": "Create Default Props"
+  },
+  "propTypeArray": {
+    "prefix": "pta",
+    "body": "PropTypes.array,",
+    "description": "Array prop type"
+  },
+  "propTypeArrayRequired": {
+    "prefix": "ptar",
+    "body": "PropTypes.array.isRequired,",
+    "description": "Array prop type required"
+  },
+  "propTypeBool": {
+    "prefix": "ptb",
+    "body": "PropTypes.bool,",
+    "description": "Bool prop type"
+  },
+  "propTypeBoolRequired": {
+    "prefix": "ptbr",
+    "body": "PropTypes.bool.isRequired,",
+    "description": "Bool prop type required"
+  },
+  "propTypeFunc": {
+    "prefix": "ptf",
+    "body": "PropTypes.func,",
+    "description": "Func prop type"
+  },
+  "propTypeFuncRequired": {
+    "prefix": "ptfr",
+    "body": "PropTypes.func.isRequired,",
+    "description": "Func prop type required"
+  },
+  "propTypeNumber": {
+    "prefix": "ptn",
+    "body": "PropTypes.number,",
+    "description": "Number prop type"
+  },
+  "propTypeNumberRequired": {
+    "prefix": "ptnr",
+    "body": "PropTypes.number.isRequired,",
+    "description": "Number prop type required"
+  },
+  "propTypeObject": {
+    "prefix": "pto",
+    "body": "PropTypes.object,",
+    "description": "Object prop type"
+  },
+  "propTypeObjectRequired": {
+    "prefix": "ptor",
+    "body": "PropTypes.object.isRequired,",
+    "description": "Object prop type required"
+  },
+  "propTypeString": {
+    "prefix": "pts",
+    "body": "PropTypes.string,",
+    "description": "String prop type"
+  },
+  "propTypeStringRequired": {
+    "prefix": "ptsr",
+    "body": "PropTypes.string.isRequired,",
+    "description": "String prop type required"
+  },
+  "propTypeNode": {
+    "prefix": "ptnd",
+    "body": "PropTypes.node,",
+    "description": "Anything that can be rendered: numbers, strings, elements or an array"
+  },
+  "propTypeNodeRequired": {
+    "prefix": "ptndr",
+    "body": "PropTypes.node.isRequired,",
+    "description": "Anything that can be rendered: numbers, strings, elements or an array required"
+  },
+  "propTypeElement": {
+    "prefix": "ptel",
+    "body": "PropTypes.element,",
+    "description": "React element prop type"
+  },
+  "propTypeElementRequired": {
+    "prefix": "ptelr",
+    "body": "PropTypes.element.isRequired,",
+    "description": "React element prop type required"
+  },
+  "propTypeInstanceOf": {
+    "prefix": "pti",
+    "body": "PropTypes.instanceOf($0),",
+    "description": "Is an instance of a class prop type"
+  },
+  "propTypeInstanceOfRequired": {
+    "prefix": "ptir",
+    "body": "PropTypes.instanceOf($0).isRequired,",
+    "description": "Is an instance of a class prop type required"
+  },
+  "propTypeEnum": {
+    "prefix": "pte",
+    "body": "PropTypes.oneOf(['$0']),",
+    "description": "Prop type limited to specific values by treating it as an enum"
+  },
+  "propTypeEnumRequired": {
+    "prefix": "pter",
+    "body": "PropTypes.oneOf(['$0']).isRequired,",
+    "description": "Prop type limited to specific values by treating it as an enum required"
+  },
+  "propTypeOneOfType": {
+    "prefix": "ptet",
+    "body": [
+      "PropTypes.oneOfType([",
+      "  $0",
+      "]),"
+    ],
+    "description": "An object that could be one of many types"
+  },
+  "propTypeOneOfTypeRequired": {
+    "prefix": "ptetr",
+    "body": [
+      "PropTypes.oneOfType([",
+      "  $0",
+      "]).isRequired,"
+    ],
+    "description": "An object that could be one of many types required"
+  },
+  "propTypeArrayOf": {
+    "prefix": "ptao",
+    "body": "PropTypes.arrayOf($0),",
+    "description": "An array of a certain type"
+  },
+  "propTypeArrayOfRequired": {
+    "prefix": "ptaor",
+    "body": "PropTypes.arrayOf($0).isRequired,",
+    "description": "AcomponentNamen array of a certain type required"
+  },
+  "propTypeObjectOf": {
+    "prefix": "ptoo",
+    "body": "PropTypes.objectOf($0),",
+    "description": "An object with property values of a certain type"
+  },
+  "propTypeObjectOfRequired": {
+    "prefix": "ptoor",
+    "body": "PropTypes.objectOf($0).isRequired,",
+    "description": "An object with property values of a certain type required"
+  },
+  "propTypeShape": {
+    "prefix": "ptsh",
+    "body": [
+      "PropTypes.shape({",
+      "  $0",
+      "}),"
+    ],
+    "description": "An object taking on a particular shape"
+  },
+  "propTypeShapeRequired": {
+    "prefix": "ptshr",
+    "body": [
+      "PropTypes.shape({",
+      "  $0",
+      "}).isRequired,"
+    ],
+    "description": "An object taking on a particular shape required"
+  },
+    "LoremIpsumOnce": {
+    "prefix": "li1",
+    "body": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+  },
+  "LoremIpsumTwo": {
+    "prefix": "li2",
+    "body": [
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+    ],
+    "description": [
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+    ]
+  },
+  "LoremIpsumThree": {
+    "prefix": "li3",
+    "body": [
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
+    ],
+    "description": [
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
+    ]
+  },
+  "LoremIpsumFour": {
+    "prefix": "li4",
+    "body": [
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+      "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+    ],
+    "description": [
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+      "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+    ]
+  },
+  "LoremIpsumFive": {
+    "prefix": "li5",
+    "body": [
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+      "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham."
+    ],
+    "description": [
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+      "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham."
+    ]
+  },
+  "JestTest": {
+    "prefix": "it",
+    "body": [
+      "it('${1:${TM_FILENAME_BASE}}', () => {",
+      "  ${2:${TM_FILENAME_BASE}}",
+      "});"
+    ],
+    "description": "Jest Test Case"
+  }
+}

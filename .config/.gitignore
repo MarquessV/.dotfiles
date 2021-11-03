@@ -1,0 +1,4 @@
+# alt ignores
+.ignore
+# direnv 
+.envrc

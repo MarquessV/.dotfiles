@@ -1,0 +1,27 @@
+# work
+layout fat
+cd ~/Repos/shipt/neutron
+
+launch --title "editor" zsh
+launch --title "term" zsh
+launch --title "bundler" zsh
+
+# other project
+new_tab project
+layout fat
+cd ~/Repos/marquessv
+
+launch zsh
+launch zsh
+launch zsh
+
+# monitoring
+new_tab monitoring
+launch zsh -c 'source ~/.zshrc && npx gtop'
+
+# scratchpad
+new_tab scratchpad
+layout grid
+cd ~
+
+launch zsh
