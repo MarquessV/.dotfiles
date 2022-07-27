@@ -4,11 +4,9 @@
 # Other things to install:
 #   - Xcode + Command Line Utilities
 #   - Amphetamine
-#   - Android Studio
-#   - Setup nvm, npm, yarn
 
 echo "Installing brew"
-$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)
+/bin/bash -c $(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)
 
 echo "Installing brew cask"
 brew tap homebrew/cask
@@ -17,18 +15,8 @@ echo "Installing developer tools"
 brew install --HEAD neovim
 brew install docker
 brew install git
-brew install openvpn
 brew install --cask github
 brew install --cask postman
-brew install --cask runjs
-
-echo "Installing mobile dev tools"
-brew install --cask flipper
-brew tap wix/brew
-brew install applesimutils
-brew install bundletool
-brew install openjdk
-brew install watchman
 
 echo "Installing command line tools"
 brew install --cask kitty
@@ -40,16 +28,17 @@ brew install glow
 brew install imagemagick
 brew install ripgrep
 brew install web
+brew install fzf
 
 echo "Installing fonts"
 brew tap homebrew/cask-fonts
 brew install font-anonymous-pro
 brew install font-ibm-plex-mono
 brew install font-fira-code-nerd-font
+brew install font-input
 
 echo "Installing programming languages and version managers"
 brew install nvm
-brew install rvm
 brew install pyenv
 
 echo "Installing communication tools"
@@ -57,17 +46,24 @@ brew install --cask slack
 brew install --cask zoom
 
 echo "Installing other tools"
-brew install --cask dropbox
 brew install --cask firefox
 brew install --cask alfred
-brew install --cask itsycal
 brew install --cask hiddenbar
 brew install --cask spotify
 
 echo "Setting up oh-my-zsh"
-$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)
+/bin/bash -c $(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)
+cp $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+source $HOME/.zshrc
+
+echo "Installing Packer.nvim"
+git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 
 echo "Pulling in dotfiles"
 git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marquessv/.dotfiles.git tmpdotfiles
 rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/
 rm -r tmpdotfiles
+dotfiles config --local status.showUntrackedFiles no
+dotfiles remote add origin git@github.com:marquessv/.dotfiles.git
+
