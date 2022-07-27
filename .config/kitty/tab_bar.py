@@ -1,6 +1,7 @@
 # pyright: reportMissingImports=false
 
-import datetime
+from datetime import datetime
+import subprocess
 
 from kitty.fast_data_types import Screen
 from kitty.rgb import Color
@@ -17,6 +18,36 @@ from kitty.utils import color_as_int
 
 timer_id = None
 
+import subprocess
+from datetime import datetime
+
+def readable_timedelta(duration):
+    data = {}
+    data['days'], remaining = divmod(duration.total_seconds(), 86_400)
+    data['h'], remaining = divmod(remaining, 3_600)
+    data['m'], data['s'] = divmod(remaining, 60)
+
+    time_parts = [f'{round(value)}{name}' for name, value in data.items() if value > 0]
+    if time_parts:
+        return ' '.join(time_parts)
+    else:
+        return 'now'
+
+def get_next_calendar_event():
+    with subprocess.Popen(["icalBuddy", "-n", "-nc", "-eed", "-ea", "-li", "1", "eventsToday"],
+                                stdout=subprocess.PIPE, 
+                                stderr=subprocess.PIPE) as proc:
+        out = proc.stdout.read().decode("utf-8")
+        out = out[2:]
+        name, time, _ = out.split("\n")
+        time = time.strip()
+        time_object = datetime.strptime(time, "%I:%M %p")
+        time_object = datetime.today().replace(hour=time_object.hour, minute=time_object.minute, second=0, microsecond=0)
+        if datetime.today() > time_object:
+            return f"{name} now"
+        time_remaining = time_object - datetime.today()
+        readable_time_remaining = readable_timedelta(time_remaining)
+        return name, readable_time_remaining
 
 def calc_draw_spaces(*args) -> int:
     length = 0
@@ -45,16 +76,23 @@ def _draw_right_status(screen: Screen, is_last: bool) -> int:
         return 0
 
     draw_attributed_string(Formatter.reset, screen)
-    date = datetime.datetime.now().strftime(" %H:%M")
+    date = datetime.now().strftime("%H:%M")
+    next_event_name, time_remaining = get_next_calendar_event()
+    event_delimit = " in " if time_remaining != 'now' else " "
+    separator = " | "
 
-    right_status_length = calc_draw_spaces(date + " ")
+    right_status_length = calc_draw_spaces(next_event_name + event_delimit + time_remaining + separator + date + " ")
 
     draw_spaces = screen.columns - screen.cursor.x - right_status_length
     if draw_spaces > 0:
         screen.draw(" " * draw_spaces)
 
     cells = [
-        (Color(135, 192, 149), date),
+        (Color(157, 75, 83), next_event_name),
+        (Color(46, 44, 47), event_delimit),
+        (Color(89, 121, 95), time_remaining),
+        (Color(46, 44, 47), separator),
+        (Color(64, 115, 154), date),
     ]
 
     screen.cursor.fg = 0
