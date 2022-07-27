@@ -1,6 +1,6 @@
 # work
 layout fat
-cd ~/Repos/shipt/neutron
+cd ~/Repos/rigetti
 
 launch --title "editor" zsh
 launch --title "term" zsh
