@@ -410,6 +410,34 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: gopher.nvim
+time([[Config for gopher.nvim]], true)
+require("config.gopher")
+time([[Config for gopher.nvim]], false)
+-- Config for: mason.nvim
+time([[Config for mason.nvim]], true)
+require("config.mason")
+time([[Config for mason.nvim]], false)
+-- Config for: melange
+time([[Config for melange]], true)
+require("config.melange")
+time([[Config for melange]], false)
+-- Config for: nvim-autopairs
+time([[Config for nvim-autopairs]], true)
+require("config.nvim-autopairs")
+time([[Config for nvim-autopairs]], false)
+-- Config for: indent-blankline.nvim
+time([[Config for indent-blankline.nvim]], true)
+require("config.indent-blankline")
+time([[Config for indent-blankline.nvim]], false)
+-- Config for: nvim-cmp
+time([[Config for nvim-cmp]], true)
+require("config.nvim-cmp")
+time([[Config for nvim-cmp]], false)
+-- Config for: which-key.nvim
+time([[Config for which-key.nvim]], true)
+require("config.which-key")
+time([[Config for which-key.nvim]], false)
 -- Config for: leaf.nvim
 time([[Config for leaf.nvim]], true)
 require("config.leaf")
@@ -418,22 +446,26 @@ time([[Config for leaf.nvim]], false)
 time([[Config for neoscroll.nvim]], true)
 require("config.neoscroll")
 time([[Config for neoscroll.nvim]], false)
--- Config for: nvim-surround
-time([[Config for nvim-surround]], true)
-require("config.surround")
-time([[Config for nvim-surround]], false)
--- Config for: telescope.nvim
-time([[Config for telescope.nvim]], true)
-require("config.telescope")
-time([[Config for telescope.nvim]], false)
--- Config for: trouble.nvim
-time([[Config for trouble.nvim]], true)
-require("config.trouble")
-time([[Config for trouble.nvim]], false)
+-- Config for: nvim-comment
+time([[Config for nvim-comment]], true)
+require("config.nvim-comment")
+time([[Config for nvim-comment]], false)
+-- Config for: leap.nvim
+time([[Config for leap.nvim]], true)
+require("config.leap")
+time([[Config for leap.nvim]], false)
+-- Config for: neotest
+time([[Config for neotest]], true)
+require("config.neotest")
+time([[Config for neotest]], false)
 -- Config for: dressing.nvim
 time([[Config for dressing.nvim]], true)
 require("config.dressing")
 time([[Config for dressing.nvim]], false)
+-- Config for: nvim-lspconfig
+time([[Config for nvim-lspconfig]], true)
+require("config.lsp")
+time([[Config for nvim-lspconfig]], false)
 -- Config for: lualine.nvim
 time([[Config for lualine.nvim]], true)
 require("config.lualine")
@@ -446,62 +478,30 @@ time([[Config for everforest-nvim]], false)
 time([[Config for gitsigns.nvim]], true)
 require("config.gitsigns")
 time([[Config for gitsigns.nvim]], false)
--- Config for: nightfox.nvim
-time([[Config for nightfox.nvim]], true)
-require("config.nightfox")
-time([[Config for nightfox.nvim]], false)
--- Config for: nvim-cmp
-time([[Config for nvim-cmp]], true)
-require("config.nvim-cmp")
-time([[Config for nvim-cmp]], false)
--- Config for: neotest
-time([[Config for neotest]], true)
-require("config.neotest")
-time([[Config for neotest]], false)
--- Config for: which-key.nvim
-time([[Config for which-key.nvim]], true)
-require("config.which-key")
-time([[Config for which-key.nvim]], false)
--- Config for: gopher.nvim
-time([[Config for gopher.nvim]], true)
-require("config.gopher")
-time([[Config for gopher.nvim]], false)
--- Config for: mason.nvim
-time([[Config for mason.nvim]], true)
-require("config.mason")
-time([[Config for mason.nvim]], false)
--- Config for: leap.nvim
-time([[Config for leap.nvim]], true)
-require("config.leap")
-time([[Config for leap.nvim]], false)
--- Config for: nvim-comment
-time([[Config for nvim-comment]], true)
-require("config.nvim-comment")
-time([[Config for nvim-comment]], false)
--- Config for: symbols-outline.nvim
-time([[Config for symbols-outline.nvim]], true)
-require("config.symbols-outline")
-time([[Config for symbols-outline.nvim]], false)
--- Config for: nvim-autopairs
-time([[Config for nvim-autopairs]], true)
-require("config.nvim-autopairs")
-time([[Config for nvim-autopairs]], false)
--- Config for: indent-blankline.nvim
-time([[Config for indent-blankline.nvim]], true)
-require("config.indent-blankline")
-time([[Config for indent-blankline.nvim]], false)
--- Config for: melange
-time([[Config for melange]], true)
-require("config.melange")
-time([[Config for melange]], false)
+-- Config for: nvim-surround
+time([[Config for nvim-surround]], true)
+require("config.surround")
+time([[Config for nvim-surround]], false)
 -- Config for: nvim-treesitter
 time([[Config for nvim-treesitter]], true)
 require("config.nvim-treesitter")
 time([[Config for nvim-treesitter]], false)
--- Config for: nvim-lspconfig
-time([[Config for nvim-lspconfig]], true)
-require("config.lsp")
-time([[Config for nvim-lspconfig]], false)
+-- Config for: nightfox.nvim
+time([[Config for nightfox.nvim]], true)
+require("config.nightfox")
+time([[Config for nightfox.nvim]], false)
+-- Config for: telescope.nvim
+time([[Config for telescope.nvim]], true)
+require("config.telescope")
+time([[Config for telescope.nvim]], false)
+-- Config for: trouble.nvim
+time([[Config for trouble.nvim]], true)
+require("config.trouble")
+time([[Config for trouble.nvim]], false)
+-- Config for: symbols-outline.nvim
+time([[Config for symbols-outline.nvim]], true)
+require("config.symbols-outline")
+time([[Config for symbols-outline.nvim]], false)
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then
