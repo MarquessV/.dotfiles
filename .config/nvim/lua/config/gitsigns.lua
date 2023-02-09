@@ -1,7 +1,3 @@
-if Config.theme == "leaf" then
-	vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", { default = true, link = "LineNr" })
-end
-
 local function showFugitiveGit()
 	if vim.fn.FugitiveHead() ~= "" then
 		vim.cmd([[
