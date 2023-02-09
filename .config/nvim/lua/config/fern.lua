@@ -21,22 +21,22 @@ local function init_fern()
 	      \)]])
 
 	-- Open split with same binding as Telescope
-	vim.api.nvim_buf_set_keymap(0, "n", "<C-v>", '<plug>(fern-action-open:side)', opts)
+	vim.api.nvim_buf_set_keymap(0, "n", "<C-v>", "<plug>(fern-action-open:side)", opts)
 
 	-- Toggle leaf under cursor
-	vim.api.nvim_buf_set_keymap(0, "n", "<Tab>", '<plug>(fern-my-open-or-expand)', opts)
+	vim.api.nvim_buf_set_keymap(0, "n", "<Tab>", "<plug>(fern-my-open-or-expand)", opts)
 
 	-- Use netrw mappings
 	vim.api.nvim_buf_set_keymap(0, "n", "d", "<plug>(fern-action-new-dir)", opts)
 	vim.api.nvim_buf_set_keymap(0, "n", "%", "<plug>(fern-action-new-file)", opts)
+
+	-- Use hop
+	vim.api.nvim_set_keymap("", "{", "<cmd>lua require'hop'.hint_char1()<CR>", {})
 end
 
 local fern_group = vim.api.nvim_create_augroup("config_fern", { clear = true })
-vim.api.nvim_create_autocmd(
-	"FileType",
-	{
-		pattern = { "fern" },
-		group = fern_group,
-		callback = init_fern
-	}
-)
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "fern" },
+	group = fern_group,
+	callback = init_fern,
+})

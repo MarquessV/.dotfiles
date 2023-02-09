@@ -1,6 +1,25 @@
-local common_config = {}
+local border = {
+	{ "╭", "FloatBorder" },
+	{ "─", "FloatBorder" },
+	{ "╮", "FloatBorder" },
+	{ "│", "FloatBorder" },
+	{ "╯", "FloatBorder" },
+	{ "─", "FloatBorder" },
+	{ "╰", "FloatBorder" },
+	{ "│", "FloatBorder" },
+}
 
-local function key_maps(bufnr)
+local common_config = {
+	handlers = {
+		["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
+		["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
+	},
+}
+
+-- LSP settings (for overriding per client)
+local function key_maps(bufnr, extra)
+	extra = extra or {}
+
 	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
 	local opts = { buffer = bufnr, noremap = true, silent = true }
@@ -20,9 +39,12 @@ local function key_maps(bufnr)
 				h = { "<cmd>lua vim.lsp.buf.signature_help()<CR>", "Help" },
 				n = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
 				r = { "<cmd>Trouble lsp_references<CR>", "References" },
+				s = { "<cmd>SymbolsOutline<CR>", "Outline" },
 				f = { "<cmd>Telescope grep_string<CR>", "Find Word" },
 				l = {
-					"<cmd>lua vim.diagnostic.open_float({scope = 'line'})<CR>",
+					function()
+						vim.diagnostic.open_float({ scope = "line", focusable = false, border = border })
+					end,
 					"Show Line Diagnostics",
 				},
 				x = {
@@ -38,16 +60,19 @@ local function key_maps(bufnr)
 				},
 			},
 		},
+		["<C-;>"] = { "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", "Find symbols" },
 		["[d"] = { "<cmd>lua vim.diagnostic.goto_prev()<CR>", "Prev Diagnostics" },
 		["]d"] = { "<cmd>lua vim.diagnostic.goto_next()<CR>", "Next Diagnostics" },
 	}
 
-	require("which-key").register(maps, opts)
+	local wk = require("which-key")
+	wk.register(maps, opts)
+	wk.register(extra, opts)
 end
 
 local function documentHighlight(client, bufnr)
 	-- Set autocommands conditional on server_capabilities
-	if client.resolved_capabilities.document_highlight then
+	if client.server_capabilities.document_highlight then
 		local lsp_document_highlight = vim.api.nvim_create_augroup("config_lsp_document_highlight", { clear = false })
 		vim.api.nvim_clear_autocmds({
 			buffer = bufnr,
@@ -70,7 +95,7 @@ local function documentHighlight(client, bufnr)
 	end
 end
 
-local function lsp_formatting(bufnr)
+local lsp_formatting = function(bufnr)
 	vim.lsp.buf.format({
 		filter = function(client)
 			return client.name == "null-ls"
@@ -79,6 +104,7 @@ local function lsp_formatting(bufnr)
 	})
 end
 
+local null_ls_augroup = vim.api.nvim_create_augroup("lsp_formatting", {})
 function common_config.on_attach(client, bufnr)
 	key_maps(bufnr)
 	local lsp_hover_augroup = vim.api.nvim_create_augroup("config_lsp_hover", { clear = false })
@@ -99,7 +125,6 @@ function common_config.on_attach(client, bufnr)
 		documentHighlight(client, bufnr)
 	end
 
-	local null_ls_augroup = vim.api.nvim_create_augroup("lsp_formatting", {})
 	if client.supports_method("textDocument/formatting") then
 		vim.api.nvim_clear_autocmds({ group = null_ls_augroup, buffer = bufnr })
 		vim.api.nvim_create_autocmd("BufWritePre", {
@@ -111,44 +136,78 @@ function common_config.on_attach(client, bufnr)
 		})
 	end
 
-	require("nvim-navic").attach(client, bufnr)
+	if client.supports_method("documentSymbols") then
+		require("nvim-navic").attach(client, bufnr)
+	end
 end
+
+-- Needs to be setup before lspconfig
+require("neoconf").setup({})
+require("neodev").setup({})
 
 -- cmp lsp
 common_config.capabilities = vim.lsp.protocol.make_client_capabilities()
-common_config.capabilities = require("cmp_nvim_lsp").update_capabilities(common_config.capabilities)
+common_config.capabilities = require("cmp_nvim_lsp").default_capabilities(common_config.capabilities)
 
 -- Diagnostics
 vim.diagnostic.config({ virtual_text = true, signs = true })
 
+-- null-ls for diagnostics from static checkers and formatting
+local null_ls = require("null-ls")
+null_ls.setup({
+	on_attach = common_config.on_attach,
+	sources = {
+		-- go
+		null_ls.builtins.formatting.gofmt,
+		null_ls.builtins.formatting.goimports,
+		null_ls.builtins.diagnostics.golangci_lint,
+		null_ls.builtins.formatting.stylua, -- lualsp
+		null_ls.builtins.code_actions.gitsigns, -- git
+		null_ls.builtins.diagnostics.hadolint, -- docker
+		null_ls.builtins.diagnostics.jsonlint, -- json
+		null_ls.builtins.formatting.rustfmt.with({
+			extra_args = { "--edition=2021" },
+		}), -- rust
+		null_ls.builtins.diagnostics.ktlint, -- kotlin
+		-- python
+		null_ls.builtins.diagnostics.flake8,
+		null_ls.builtins.formatting.black,
+	},
+})
+
 -- Server Configurations
 require("lspconfig").sumneko_lua.setup({
-	cmd = { "lua-language-server" },
 	on_attach = common_config.on_attach,
 	capabilities = common_config.capabilities,
+	handlers = common_config.handlers,
 	filetypes = { "lua" },
 	rootPatterns = { ".git", "init.lua" },
 	settings = {
 		Lua = {
 			diagnostics = { globals = { "vim", "Config" } },
 			telemetry = { enable = false },
+			completion = {
+				callSnippet = "Replace",
+			},
 		},
 	},
 })
 
+local python_root_files = {
+	"setup.py",
+	"setup.cfg",
+	"pyproject.toml",
+	"requirements.txt",
+	"pyrightconfig.json",
+}
+
 require("lspconfig").pyright.setup({
-	cmd = { "pyright-langserver", "--stdio" },
 	on_attach = common_config.on_attach,
 	capabilities = common_config.capabilities,
+	handlers = common_config.handlers,
 	filetypes = { "python" },
-	rootPatterns = {
-		".git",
-		"setup.py",
-		"setup.cfg",
-		"pyproject.toml",
-		"requirements.txt",
-		"tab_bar.py",
-	},
+	root_dir = require("lspconfig").util.root_pattern(unpack(python_root_files)),
+	rootPatterns = python_root_files,
 	settings = {
 		python = {
 			analysis = {
@@ -158,23 +217,23 @@ require("lspconfig").pyright.setup({
 				autoSearchPaths = true,
 				useLibraryCodeForTypes = true,
 				diagnosticMode = "workspace",
+				extraPaths = { "pyquil" },
 			},
 		},
 	},
 })
 
 require("lspconfig").kotlin_language_server.setup({
-	cmd = { "kotlin-language-server" },
 	on_attach = common_config.on_attach,
 	capabilities = common_config.capabilities,
-	filetypes = { "kotlin" },
+	handlers = common_config.handlers,
 	rootPatterns = { ".git", "settings.gradle" },
 })
 
 require("lspconfig").gopls.setup({
-	cmd = { "gopls" },
 	on_attach = common_config.on_attach,
 	capabilities = common_config.capabilities,
+	handlers = common_config.handlers,
 	settings = {
 		gopls = {
 			experimentalPostfixCompletions = true,
@@ -183,4 +242,74 @@ require("lspconfig").gopls.setup({
 		},
 	},
 	init_options = { usePlaceholders = true },
+})
+
+require("lspconfig").yamlls.setup({
+	on_attach = common_config.on_attach,
+	capabilities = common_config.capabilities,
+	handlers = common_config.handlers,
+	settings = {
+		yaml = {
+			schemas = {
+				["https://json.schemastore.org/github-workflow.json"] = "./.github/workflows/*",
+			},
+		},
+	},
+})
+
+require("lspconfig").taplo.setup({
+	on_attach = common_config.on_attach,
+	capabilities = common_config.capabilities,
+	handlers = common_config.handlers,
+	settings = {},
+})
+
+require("lspconfig").cssls.setup({
+	on_attach = common_config.on_attach,
+	capabilities = common_config.capabilities,
+	handlers = common_config.handlers,
+	settings = {},
+})
+
+local rt = require("rust-tools")
+rt.setup({
+	tools = {
+		runnables = {
+			use_telescope = true,
+		},
+		inlay_hints = {
+			auto = true,
+			show_parameter_hints = true,
+			parameter_hints_prefix = "<- ",
+			other_hints_prefix = "=> ",
+		},
+	},
+	server = {
+		on_attach = common_config.on_attach,
+		settings = {
+			["rust-analyzer"] = {
+				cargo = {
+					allFeatures = true,
+					buildScripts = {
+						enable = true,
+					},
+				},
+				checkOnSave = {
+					enable = true,
+					command = "clippy",
+				},
+				diagnostics = {
+					experimental = {
+						enable = true,
+					},
+				},
+				inlayHints = {
+					lifetimeElisionHints = {
+						enable = true,
+						useParameterNames = true,
+					},
+				},
+			},
+		},
+	},
 })

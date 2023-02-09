@@ -1,23 +1,22 @@
-local install_path = vim.fn.stdpath("data") ..
-                         "/site/pack/packer/start/packer.nvim"
+local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-    print("Downloading Packer ...")
-    vim.fn.system({
-        "git", "clone", "https://github.com/wbthomason/packer.nvim",
-        install_path
-    })
-    vim.api.nvim_command("packadd packer.nvim")
-    require("config.packer")
-    require("packer").sync()
+	print("Downloading Packer ...")
+	vim.fn.system({
+		"git",
+		"clone",
+		"https://github.com/wbthomason/packer.nvim",
+		install_path,
+	})
+	vim.api.nvim_command("packadd packer.nvim")
+	require("config.packer").sync()
 end
 
--- require("impatient")
 require("config.packer")
 
-Config = {theme = "leaf", lsp = {hightlight = true}}
+Config = { theme = "everforest", lsp = { highlight = true } }
 
 -- Mappings
-vim.g.mapleader = ','
+vim.g.mapleader = ","
 
 -- LSP
 vim.o.hidden = true
@@ -32,9 +31,9 @@ vim.o.timeoutlen = 500
 vim.wo.number = true
 vim.o.cursorline = true
 vim.o.signcolumn = "yes"
-vim.o.cmdheight = 0
+vim.o.cmdheight = 1
 vim.o.termguicolors = true
-vim.cmd("colorscheme " .. Config.theme)
+vim.cmd.colorscheme(Config.theme)
 
 -- Search behavior
 vim.o.incsearch = true
@@ -48,9 +47,9 @@ vim.o.splitbelow = true
 
 -- Folds
 vim.o.foldlevel = 20
-vim.o.foldmethod = 'expr'
-vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
-vim.o.clipboard = 'unnamed'
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "nvim_treesitter#foldexpr()"
+vim.o.clipboard = "unnamed"
 
 -- Enable mouse
 vim.o.mouse = "a"
@@ -59,7 +58,9 @@ vim.o.mouse = "a"
 vim.o.tabstop = 4
 vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
+vim.o.expandtab = true
 
 -- Misc
 vim.o.title = true
 vim.o.scrolloff = 8
+vim.o.exrc = true

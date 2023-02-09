@@ -1,162 +1,241 @@
 local packer = require("packer")
 
 local plugins = packer.startup({
-    function(use)
-        -- Packer
-        use {"wbthomason/packer.nvim"}
+	function(use)
+		-- Packer
+		use({ "wbthomason/packer.nvim" })
 
-        -- Plugin Dependency Management
-        use {
-            "williamboman/mason.nvim",
-            requires = {'williamboman/mason-lspconfig.nvim', 'WhoIsSethDaniel/mason-tool-installer.nvim'},
-            config = [[require("config.mason")]]
-        }
+		-- Plugin Dependency Management
+		use({
+			"williamboman/mason.nvim",
+			requires = { "williamboman/mason-lspconfig.nvim", "WhoIsSethDaniel/mason-tool-installer.nvim" },
+			config = [[require("config.mason")]],
+		})
 
-        -- Load config faster
-        use {"lewis6991/impatient.nvim"}
+		-- Load config faster
+		use({ "lewis6991/impatient.nvim" })
 
-        -- Treesitter
-        use {
-            "nvim-treesitter/nvim-treesitter",
-            run = ":TSUpdate",
-            config = [[require("config.nvim-treesitter")]]
-        }
+		-- UI Improvements
+		use({ "stevearc/dressing.nvim", config = [[require("config.dressing")]] })
 
-        -- Statusline
-        use {
-            'nvim-lualine/lualine.nvim',
-            requires = {"kyazdani42/nvim-web-devicons"},
-            config = [[require("config.lualine")]]
-        }
-        use {"SmiteshP/nvim-navic", requires = {"neovim/nvim-lspconfig"}}
+		-- Treesitter
+		use({
+			"nvim-treesitter/nvim-treesitter",
+			run = ":TSUpdate",
+			config = [[require("config.nvim-treesitter")]],
+		})
 
-        -- Bufferline
-        use {
-            'akinsho/bufferline.nvim',
-            tag = "v2.*",
-            requires = {'kyazdani42/nvim-web-devicons'},
-            config = [[require("config.bufferline")]]
-        }
+		use({
+			"nvim-treesitter/playground",
+		})
 
-        -- Git
-        use {"tpope/vim-fugitive"}
+		-- Statusline
+		use({
+			"nvim-lualine/lualine.nvim",
+			requires = { "kyazdani42/nvim-web-devicons" },
+			config = [[require("config.lualine")]],
+		})
+		use({ "SmiteshP/nvim-navic", requires = { "neovim/nvim-lspconfig" } })
 
-        use {
-            "lewis6991/gitsigns.nvim",
-            requires = {"nvim-lua/plenary.nvim", opt = true},
-            config = [[require("config.gitsigns")]]
-        }
+		-- Git
+		use({ "tpope/vim-fugitive" })
 
-        -- LSP
-        use {"neovim/nvim-lspconfig", config = [[require("config.lsp")]]}
+		use({
+			"lewis6991/gitsigns.nvim",
+			requires = { "nvim-lua/plenary.nvim" },
+			config = [[require("config.gitsigns")]],
+		})
 
-        use {
-            'jose-elias-alvarez/null-ls.nvim',
-            config = [[require("config.null-ls")]]
-        }
+		-- LSP
+		use({ "neovim/nvim-lspconfig", config = [[require("config.lsp")]] })
 
-        -- Better Quickfix List
-        use {
-            "folke/trouble.nvim",
-            requires = "kyazdani42/nvim-web-devicons",
-            config = [[require("config.trouble")]]
-        }
+		use({
+			"jose-elias-alvarez/null-ls.nvim",
+			-- since they are related, config is in config.lsp
+		})
 
-        -- Unit Tests
-        use {
-            "nvim-neotest/neotest",
-            requires = {
-                "nvim-lua/plenary.nvim", "nvim-treesitter/nvim-treesitter",
-                "antoinemadec/FixCursorHold.nvim", 'nvim-neotest/neotest-go'
+		use({
+			"simrat39/symbols-outline.nvim",
+			config = [[require("config.symbols-outline")]],
+		})
 
-            },
-            config = [[require("config.neotest")]]
+		-- Language Support
+		-- Go
+		use({
+			"olexsmir/gopher.nvim",
+			requires = {
+				"nvim-lua/plenary.nvim",
+				"nvim-treesitter/nvim-treesitter",
+			},
+			config = [[require("config.gopher")]],
+		})
 
-        }
+		-- Rust
+		-- Really just a preconfigured LSP, so setup is in `config.lsp`
+		use({ "simrat39/rust-tools.nvim" })
 
-        -- Debugging
-        use {'mfussenegger/nvim-dap'}
+		-- Kotlin
+		use({ "udalov/kotlin-vim" })
 
-        -- Completion
-        use {
-            "hrsh7th/nvim-cmp",
-            requires = {
-                "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-nvim-lsp-signature-help",
-                "hrsh7th/cmp-nvim-lua", "hrsh7th/cmp-buffer",
-                "hrsh7th/cmp-path", "hrsh7th/cmp-cmdline", "L3MON4D3/LuaSnip",
-                "saadparwaiz1/cmp_luasnip", "onsails/lspkind-nvim"
-            },
-            config = [[require("config.nvim-cmp")]]
-        }
+		-- Better Quickfix List
+		use({
+			"folke/trouble.nvim",
+			requires = "kyazdani42/nvim-web-devicons",
+			config = [[require("config.trouble")]],
+		})
 
-        -- Keymap documentation
-        use {"folke/which-key.nvim", config = [[require("config.which-key")]]}
+		-- LSP Setting management, config in lsp.lua
+		use({ "folke/neoconf.nvim" })
 
-        -- Autopairs
-        use {
-            "windwp/nvim-autopairs",
-            requires = {"nvim-treesitter/nvim-treesitter", "hrsh7th/nvim-cmp"},
-            config = [[require("config.nvim-autopairs")]]
-        }
+		-- Unit Tests
+		use({
+			"nvim-neotest/neotest",
+			requires = {
+				"nvim-lua/plenary.nvim",
+				"nvim-treesitter/nvim-treesitter",
+				"antoinemadec/FixCursorHold.nvim",
+				"nvim-neotest/neotest-go",
+				"nvim-neotest/neotest-python",
+				"rouge8/neotest-rust",
+			},
+			config = [[require("config.neotest")]],
+		})
 
-        -- Comments
-        use {
-            "terrortylor/nvim-comment",
-            config = [[require("config.nvim-comment")]]
-        }
+		-- Debugging
+		use({ "mfussenegger/nvim-dap" })
 
-        -- File Management
-        use {
-            "lambdalisue/fern.vim",
-            requires = {
-                {"antoinemadec/FixCursorHold.nvim"},
-                {"lambdalisue/nerdfont.vim"},
-                {"lambdalisue/fern-renderer-nerdfont.vim"},
-                {"yuki-yano/fern-preview.vim"}, {"lambdalisue/fern-hijack.vim"},
-                {"lambdalisue/fern-mapping-project-top.vim"},
-                {"lambdalisue/fern-git-status.vim"},
-                {"lambdalisue/fern-mapping-git.vim"}
-            },
-            config = [[require("config.fern")]]
-        }
+		-- Completion
+		use({
+			"hrsh7th/nvim-cmp",
+			requires = {
+				"hrsh7th/cmp-nvim-lsp",
+				"hrsh7th/cmp-nvim-lsp-signature-help",
+				"hrsh7th/cmp-nvim-lua",
+				"hrsh7th/cmp-buffer",
+				"hrsh7th/cmp-path",
+				"hrsh7th/cmp-cmdline",
+				"L3MON4D3/LuaSnip",
+				"saadparwaiz1/cmp_luasnip",
+				"onsails/lspkind-nvim",
+			},
+			config = [[require("config.nvim-cmp")]],
+		})
 
-        -- Telescope
-        use {
-            "nvim-telescope/telescope.nvim",
-            branch = "0.1.x",
-            requires = {
-                {"nvim-lua/popup.nvim"}, {"nvim-lua/plenary.nvim"},
-                {"nvim-telescope/telescope-fzf-native.nvim", run = "make"}
-            },
-            wants = {"popup.nvim", "plenary.nvim", "telescope-fzf-native.nvim"},
-            config = [[require("config.telescope")]]
-        }
+		-- Keymap documentation
+		use({ "folke/which-key.nvim", config = [[require("config.which-key")]] })
 
-        -- Hop
-        use {
-            "phaazon/hop.nvim",
-            branch = "v2",
-            config = [[require("config.hop")]]
-        }
+		-- Completion for neovim lua - config in lsp.lua
+		use("folke/neodev.nvim")
 
-        -- Smooth scrolling, darken inactive splits
-        use {'karb94/neoscroll.nvim', config = [[require("config.neoscroll")]]}
-        use {'sunjon/shade.nvim', config = [[require("config.shade")]]}
+		-- Autopairs
+		use({
+			"windwp/nvim-autopairs",
+			requires = { "nvim-treesitter/nvim-treesitter", "hrsh7th/nvim-cmp" },
+			config = [[require("config.nvim-autopairs")]],
+		})
 
-        -- Markdown Previews
-        use {'ellisonleao/glow.nvim'}
+		-- Comments
+		use({
+			"terrortylor/nvim-comment",
+			config = [[require("config.nvim-comment")]],
+		})
 
-        -- Kitty support
-        use {"fladson/vim-kitty"} -- config syntax highlighting
-        use {'knubie/vim-kitty-navigator', run = 'cp ./*.py ~/.config/kitty/'}
+		use({
+			"lukas-reineke/indent-blankline.nvim",
+			config = [[require("config.indent-blankline")]],
+		})
 
-        -- Show color of hex codes
-        use {"norcalli/nvim-colorizer.lua"}
+		-- File Management
+		-- use({
+		-- 	"lambdalisue/fern.vim",
+		-- 	requires = {
+		-- 		{ "lambdalisue/nerdfont.vim" },
+		-- 		{ "lambdalisue/fern-renderer-nerdfont.vim" },
+		-- 		{ "yuki-yano/fern-preview.vim" },
+		-- 		{ "lambdalisue/fern-hijack.vim" },
+		-- 		{ "lambdalisue/fern-mapping-project-top.vim" },
+		-- 		{ "lambdalisue/fern-git-status.vim" },
+		-- 		{ "lambdalisue/fern-mapping-git.vim" },
+		-- 	},
+		-- 	config = [[require("config.fern")]],
+		-- })
+		-- Telescope
+		use({
+			"nvim-telescope/telescope.nvim",
+			branch = "0.1.x",
+			requires = {
+				{ "nvim-lua/popup.nvim" },
+				{ "nvim-lua/plenary.nvim" },
+				{ "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+				{ "nvim-telescope/telescope-fzy-native.nvim" },
+			},
+			config = [[require("config.telescope")]],
+		})
+		-- Config w/ Telescope
+		use({ "nvim-telescope/telescope-file-browser.nvim" })
 
-        -- Colorschemes
-        use {'daschw/leaf.nvim'}
+		-- Interactive scratchpad
+		use({ "metakirby5/codi.vim" })
 
-    end
+		-- Hop
+		-- use({
+		-- 	"phaazon/hop.nvim",
+		-- 	branch = "v2",
+		-- 	config = [[require("config.hop")]],
+		-- })
+
+		use({
+			"ggandor/leap.nvim",
+			config = [[require("config.leap")]],
+		})
+
+		-- Smooth scrolling
+		use({ "karb94/neoscroll.nvim", config = [[require("config.neoscroll")]] })
+
+		-- Markdown Previews
+		use({ "ellisonleao/glow.nvim" })
+
+		-- Kitty support
+		use({ "fladson/vim-kitty" }) -- config syntax highlighting
+		use({ "knubie/vim-kitty-navigator", run = "cp ./*.py ~/.config/kitty/" })
+
+		-- Show color of hex codes
+		use({ "norcalli/nvim-colorizer.lua" })
+
+		-- Surround motion
+		use({
+			"kylechui/nvim-surround",
+			tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+			config = [[require("config.surround")]],
+		})
+
+		-- Colorschemes
+		use({
+			"daschw/leaf.nvim",
+			config = [[require("config.leaf")]],
+		})
+
+		use({
+			"EdenEast/nightfox.nvim",
+			config = [[require("config.nightfox")]],
+			run = ":NightfoxCompile",
+		})
+
+		use({
+			"kartikp10/noctis.nvim",
+			requires = { "rktjmp/lush.nvim" },
+		})
+
+		use({
+			"savq/melange",
+			config = [[require("config.melange")]],
+		})
+
+		use({
+			"neanias/everforest-nvim",
+			config = [[require("config.everforest")]],
+		})
+	end,
 })
 
 return plugins

@@ -1,12 +1,34 @@
 if Config.theme == "leaf" then
-	vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", {default = true, link="LineNr"})
+	vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", { default = true, link = "LineNr" })
 end
 
-require('gitsigns').setup({
+local function showFugitiveGit()
+	if vim.fn.FugitiveHead() ~= "" then
+		vim.cmd([[
+    Git
+    wincmd H  " Open Git window in vertical split
+    setlocal winfixwidth
+    vertical resize 180
+    setlocal winfixwidth
+    setlocal nonumber
+    setlocal norelativenumber
+    ]])
+	end
+end
+
+local function toggleFugitiveGit()
+	if vim.fn.buflisted(vim.fn.bufname("fugitive:///*/.git//$")) ~= 0 then
+		vim.cmd([[ execute ":bdelete" bufname('fugitive:///*/.git//$') ]])
+	else
+		showFugitiveGit()
+	end
+end
+
+require("gitsigns").setup({
 	current_line_blame = true,
-	current_line_blame_formatter_opts = {relative_time = true},
+	current_line_blame_formatter_opts = { relative_time = true },
 	on_attach = function(bufnr)
-		local opts = { buffer=bufnr, noremap=true, silent=true }
+		local opts = { buffer = bufnr, noremap = true, silent = true }
 		local maps = {
 			["<leader>g"] = {
 				name = "Git",
@@ -21,12 +43,13 @@ require('gitsigns').setup({
 					"<cmd>lua require ('gitsigns').undo_stage_hunk()<cr>",
 					"Undo Stage Hunk",
 				},
+				g = { toggleFugitiveGit, "Status" },
+				b = { "<cmd>Telescope git_branches<CR>", "Branches" },
 			},
 			["<leader>f"] = {
-				p = { "<cmd>Telescope git_files<CR>", "Git Files" }
+				p = { "<cmd>Telescope git_files<CR>", "Git Files" },
 			},
-			["<c-p>"] = { "<cmd>Telescope git_files<CR>", "Git Files" }
 		}
 		require("which-key").register(maps, opts)
-	end
+	end,
 })

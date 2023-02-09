@@ -1,6 +1,10 @@
 local actions = require("telescope.actions")
 
-require("telescope").setup {
+local borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
+
+local trouble = require("trouble.providers.telescope")
+
+require("telescope").setup({
 	defaults = {
 		vimgrep_arguments = {
 			"rg",
@@ -9,7 +13,7 @@ require("telescope").setup {
 			"--with-filename",
 			"--line-number",
 			"--column",
-			"--smart-case"
+			"--smart-case",
 		},
 		layout_config = {
 			height = 0.80,
@@ -24,13 +28,13 @@ require("telescope").setup {
 		selection_strategy = "reset",
 		sorting_strategy = "ascending",
 		layout_strategy = "horizontal",
-		file_sorter =  require("telescope.sorters").get_fuzzy_file,
-		file_ignore_patterns = { ".out" },
-		generic_sorter =  require("telescope.sorters").get_generic_fuzzy_sorter,
+		file_sorter = require("telescope.sorters").get_fuzzy_file,
+		file_ignore_patterns = { "\\.out", "vendor" },
+		generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
 		path_display = { "absolute" },
 		winblend = 0,
 		border = {},
-		borderchars = { '─', '│', '─', '│', '┌', '┐', '┘', '└'},
+		borderchars = borderchars,
 		color_devicons = true,
 		use_less = true,
 		set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
@@ -42,11 +46,12 @@ require("telescope").setup {
 				["<esc>"] = actions.close,
 				["<C-j>"] = actions.move_selection_next,
 				["<C-k>"] = actions.move_selection_previous,
+				["<C-q>"] = trouble.open_with_trouble,
+			},
+			n = {
+				["<C-q>"] = trouble.open_with_trouble,
 			},
 		},
-
-		-- Developer configurations: Not meant for general override
-		buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
 	},
 	pickers = {
 		buffers = {
@@ -54,23 +59,32 @@ require("telescope").setup {
 			theme = "dropdown",
 			previewer = false,
 			borderchars = {
-				prompt =  { '─', '│', ' ', '│', '┌', '┐', '│', '│' },
-				results = { '─', '│', '─', '│', '├', '┤', '┘', '└' },
+				prompt = borderchars,
+				results = borderchars,
 			},
 			mappings = {
 				i = {
-					["<c-d>"] = require("telescope.actions").delete_buffer,
-				}
-			}
-		}
+					["<c-w>"] = require("telescope.actions").delete_buffer,
+				},
+			},
+		},
+		finder = {
+			cwd_to_path = true,
+		},
 	},
 	extensions = {
 		fzf = {
-			override_generic_sorter = true,  -- override the generic sorter
-			override_file_sorter = true,     -- override the file sorter
-			case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-		}
-	}
-}
+			fuzzy = true,
+			override_generic_sorter = true, -- override the generic sorter
+			override_file_sorter = true, -- override the file sorter
+			case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+		},
+		file_browser = {
+			theme = "ivy",
+			hijack_netrw = true,
+		},
+	},
+})
 
-require("telescope").load_extension("fzf")
+require("telescope").load_extension("fzy_native")
+require("telescope").load_extension("file_browser")
