@@ -2,3 +2,9 @@
 .ignore
 # direnv 
 .envrc
+# neovim config
+neoconf.json
+.neoconf.json
+.nvim.lua
+.nvimrc
+.exrc

@@ -1,20 +1,14 @@
-local border = {
-	{ "╭", "FloatBorder" },
-	{ "─", "FloatBorder" },
-	{ "╮", "FloatBorder" },
-	{ "│", "FloatBorder" },
-	{ "╯", "FloatBorder" },
-	{ "─", "FloatBorder" },
-	{ "╰", "FloatBorder" },
-	{ "│", "FloatBorder" },
-}
-
 local common_config = {
 	handlers = {
-		["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
-		["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
+		["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
+		["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" }),
 	},
 }
+
+function TelescopeSymbolFinder()
+	local lsp_symbols = vim.tbl_map(string.lower, vim.lsp.protocol.SymbolKind)
+	require("telescope.builtin").lsp_dynamic_workspace_symbols({ symbols = lsp_symbols })
+end
 
 -- LSP settings (for overriding per client)
 local function key_maps(bufnr, extra)
@@ -43,7 +37,7 @@ local function key_maps(bufnr, extra)
 				f = { "<cmd>Telescope grep_string<CR>", "Find Word" },
 				l = {
 					function()
-						vim.diagnostic.open_float({ scope = "line", focusable = false, border = border })
+						vim.diagnostic.open_float({ scope = "line", focusable = false, border = "rounded" })
 					end,
 					"Show Line Diagnostics",
 				},
@@ -60,7 +54,10 @@ local function key_maps(bufnr, extra)
 				},
 			},
 		},
-		["<C-;>"] = { "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", "Find symbols" },
+		["<C-;>"] = {
+			"<cmd>lua TelescopeSymbolFinder()<CR>",
+			"Find symbols",
+		},
 		["[d"] = { "<cmd>lua vim.diagnostic.goto_prev()<CR>", "Prev Diagnostics" },
 		["]d"] = { "<cmd>lua vim.diagnostic.goto_next()<CR>", "Next Diagnostics" },
 	}
@@ -265,6 +262,13 @@ require("lspconfig").taplo.setup({
 })
 
 require("lspconfig").cssls.setup({
+	on_attach = common_config.on_attach,
+	capabilities = common_config.capabilities,
+	handlers = common_config.handlers,
+	settings = {},
+})
+
+require("lspconfig").jsonls.setup({
 	on_attach = common_config.on_attach,
 	capabilities = common_config.capabilities,
 	handlers = common_config.handlers,

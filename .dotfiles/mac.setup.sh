@@ -3,7 +3,6 @@
 # Sets up most of my tools on Mac
 # Other things to install:
 #   - Xcode + Command Line Utilities
-#   - Amphetamine
 
 echo "Installing brew"
 /bin/bash -c $(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)
@@ -36,6 +35,7 @@ brew install font-anonymous-pro
 brew install font-ibm-plex-mono
 brew install font-fira-code-nerd-font
 brew install font-input
+brew install font-iosevka
 
 echo "Installing programming languages and version managers"
 brew install nvm
@@ -56,9 +56,6 @@ echo "Setting up oh-my-zsh"
 cp $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 source $HOME/.zshrc
-
-echo "Installing Packer.nvim"
-git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 
 echo "Pulling in dotfiles"
 git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marquessv/.dotfiles.git tmpdotfiles

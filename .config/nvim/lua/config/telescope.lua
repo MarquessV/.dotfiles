@@ -1,7 +1,5 @@
 local actions = require("telescope.actions")
 
-local borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
-
 local trouble = require("trouble.providers.telescope")
 
 require("telescope").setup({
@@ -31,16 +29,16 @@ require("telescope").setup({
 		file_sorter = require("telescope.sorters").get_fuzzy_file,
 		file_ignore_patterns = { "\\.out", "vendor" },
 		generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
-		path_display = { "absolute" },
+		path_display = { truncate = 1 },
 		winblend = 0,
-		border = {},
-		borderchars = borderchars,
+		border = true,
 		color_devicons = true,
-		use_less = true,
+		dynamic_preview_title = true,
 		set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
 		file_previewer = require("telescope.previewers").vim_buffer_cat.new,
 		grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
 		qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+		prefilter_sorter = require("telescope.sorters").prefilter,
 		mappings = {
 			i = {
 				["<esc>"] = actions.close,
@@ -58,10 +56,6 @@ require("telescope").setup({
 			sort_lastused = true,
 			theme = "dropdown",
 			previewer = false,
-			borderchars = {
-				prompt = borderchars,
-				results = borderchars,
-			},
 			mappings = {
 				i = {
 					["<c-w>"] = require("telescope.actions").delete_buffer,
