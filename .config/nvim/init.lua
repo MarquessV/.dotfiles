@@ -11,7 +11,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-Config = { theme = "everforest", lsp = { highlight = true } }
+Config = { theme = "nordic", lsp = { highlight = true } }
 
 require("config.lazy")
 

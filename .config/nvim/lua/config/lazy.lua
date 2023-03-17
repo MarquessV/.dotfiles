@@ -42,8 +42,13 @@ require("lazy").setup({
 	},
 	{ "SmiteshP/nvim-navic", dependencies = { "neovim/nvim-lspconfig" } },
 
-	-- Git
-	{ "tpope/vim-fugitive" },
+	{
+		"TimUntersberger/neogit",
+		dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" },
+		config = function()
+			require("config.neogit")
+		end,
+	},
 
 	{
 		"lewis6991/gitsigns.nvim",
@@ -58,6 +63,13 @@ require("lazy").setup({
 		"neovim/nvim-lspconfig",
 		config = function()
 			require("config.lsp")
+		end,
+	},
+
+	{
+		"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+		config = function()
+			require("lsp_lines").setup()
 		end,
 	},
 
@@ -218,6 +230,24 @@ require("lazy").setup({
 		config = function()
 			require("config.everforest")
 		end,
+	},
+
+	{
+		"https://github.com/AlexvZyl/nordic.nvim",
+		config = function()
+			require("config.nordic")
+		end,
+	},
+
+	{
+		"folke/noice.nvim",
+		config = function()
+			require("config.noice")
+		end,
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			"rcarriga/nvim-notify",
+		},
 	},
 
 	-- Markdown Previews

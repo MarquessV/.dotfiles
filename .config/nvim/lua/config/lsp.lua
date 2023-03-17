@@ -41,17 +41,6 @@ local function key_maps(bufnr, extra)
 					end,
 					"Show Line Diagnostics",
 				},
-				x = {
-					name = "Diagnostics",
-					d = {
-						"<cmd>Trouble document_diagnostics<cr>",
-						"Show Document Diagnostics",
-					},
-					w = {
-						"<cmd>Trouble workspace_diagnostics<cr>",
-						"Show Workspace Diagnostics",
-					},
-				},
 			},
 		},
 		["<C-;>"] = {
@@ -147,7 +136,7 @@ common_config.capabilities = vim.lsp.protocol.make_client_capabilities()
 common_config.capabilities = require("cmp_nvim_lsp").default_capabilities(common_config.capabilities)
 
 -- Diagnostics
-vim.diagnostic.config({ virtual_text = true, signs = true })
+vim.diagnostic.config({ virtual_text = false, signs = true })
 
 -- null-ls for diagnostics from static checkers and formatting
 local null_ls = require("null-ls")
@@ -173,7 +162,7 @@ null_ls.setup({
 })
 
 -- Server Configurations
-require("lspconfig").sumneko_lua.setup({
+require("lspconfig").lua_ls.setup({
 	on_attach = common_config.on_attach,
 	capabilities = common_config.capabilities,
 	handlers = common_config.handlers,

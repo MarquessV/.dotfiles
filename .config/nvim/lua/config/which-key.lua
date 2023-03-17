@@ -41,7 +41,6 @@ local nmaps = {
 	["<C-p>"] = { "<cmd>Telescope find_files<CR>", "Find files" },
 	["<Tab>"] = { "<cmd>bn<CR>", "Next Buffer" },
 	["<S-Tab>"] = { "<cmd>bp<CR>", "Prev Buffer" },
-	["<C-w>"] = { "<cmd>bdelete<CR>", "Close Buffer" },
 	["<C-s>"] = { "<cmd>w<CR>", "Write Buffer" },
 	["-"] = { "<cmd>Telescope file_browser path=%:p:h<CR>", "File Browser" },
 	["<Space>"] = { "za", "Toggle Fold" },
@@ -57,7 +56,7 @@ local nmaps = {
 		},
 		s = {
 			v = {
-				"<cmd>source ~/.config/nvim/init.lua | PackerSync<CR>",
+				"<cmd>source ~/.config/nvim/init.lua | Lazy sync<CR>",
 				"Sync Config",
 			},
 			t = {
@@ -84,6 +83,12 @@ local nmaps = {
 			s = {
 				'<cmd> lua require("neotest").summary.toggle()<CR>',
 				"Toggle Test Summary",
+			},
+		},
+		x = {
+			t = {
+				"<CMD>lua require('lsp_lines').toggle()<CR>",
+				"Toggle lsp_lines",
 			},
 		},
 		["<Space>"] = { ":nohlsearch<CR>", "Clear Highlights" },

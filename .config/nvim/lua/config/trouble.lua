@@ -5,7 +5,7 @@ local nmaps = {
 		x = {
 			x = { "<cmd>TroubleToggle<CR>", "Toggle Trouble" },
 			w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Worksace Diagnostics" },
-			d = { "<cmd><cmd>TroubleToggle document_diagnostics<cr>", "Document Diagnostics" },
+			d = { "<cmd>TroubleToggle document_diagnostics<cr>", "Document Diagnostics" },
 		},
 	},
 }

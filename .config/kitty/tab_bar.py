@@ -1,7 +1,7 @@
 # pyright: reportMissingImports=false
 
-from datetime import datetime
 import subprocess
+from datetime import datetime
 
 from kitty.fast_data_types import Screen
 from kitty.rgb import Color
@@ -17,9 +17,6 @@ from kitty.tab_bar import (
 from kitty.utils import color_as_int
 
 timer_id = None
-
-import subprocess
-from datetime import datetime
 
 
 def readable_timedelta(duration):
@@ -105,7 +102,7 @@ def _draw_right_status(screen: Screen, is_last: bool) -> int:
         # (Color(46, 44, 47), event_delimit),
         # (Color(89, 121, 95), time_remaining),
         # (Color(46, 44, 47), separator),
-        (Color(127, 187, 179), date),
+        (Color(129, 161, 193), date),
     ]
 
     screen.cursor.fg = 0

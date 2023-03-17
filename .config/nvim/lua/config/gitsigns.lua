@@ -1,25 +1,25 @@
-local function showFugitiveGit()
-	if vim.fn.FugitiveHead() ~= "" then
-		vim.cmd([[
-    Git
-    wincmd H  " Open Git window in vertical split
-    setlocal winfixwidth
-    vertical resize 180
-    setlocal winfixwidth
-    setlocal nonumber
-    setlocal norelativenumber
-    ]])
-	end
-end
-
-local function toggleFugitiveGit()
-	if vim.fn.buflisted(vim.fn.bufname("fugitive:///*/.git//$")) ~= 0 then
-		vim.cmd([[ execute ":bdelete" bufname('fugitive:///*/.git//$') ]])
-	else
-		showFugitiveGit()
-	end
-end
-
+-- local function showFugitiveGit()
+-- 	if vim.fn.FugitiveHead() ~= "" then
+-- 		vim.cmd([[
+--     Git
+--     wincmd H  " Open Git window in vertical split
+--     setlocal winfixwidth
+--     vertical resize 180
+--     setlocal winfixwidth
+--     setlocal nonumber
+--     setlocal norelativenumber
+--     ]])
+-- 	end
+-- end
+--
+-- local function toggleFugitiveGit()
+-- 	if vim.fn.buflisted(vim.fn.bufname("fugitive:///*/.git//$")) ~= 0 then
+-- 		vim.cmd([[ execute ":bdelete" bufname('fugitive:///*/.git//$') ]])
+-- 	else
+-- 		showFugitiveGit()
+-- 	end
+-- end
+--
 require("gitsigns").setup({
 	current_line_blame = true,
 	current_line_blame_formatter_opts = { relative_time = true },
@@ -39,7 +39,8 @@ require("gitsigns").setup({
 					"<cmd>lua require ('gitsigns').undo_stage_hunk()<cr>",
 					"Undo Stage Hunk",
 				},
-				g = { toggleFugitiveGit, "Status" },
+				-- g = { toggleFugitiveGit, "Status" },
+				g = { "<cmd>Neogit<cr>", "Git" },
 				b = { "<cmd>Telescope git_branches<CR>", "Branches" },
 			},
 			["<leader>f"] = {
