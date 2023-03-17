@@ -60,6 +60,12 @@ export PATH="/usr/local/opt/llvm/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/Users/mvaldez/.local/bin:$PATH"
 
+# clang
+export SDKROOT=$(xcrun --show-sdk-path)
+export LIBRARY_PATH=$SDKROOT/usr/lib
+export CXX=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++
+export CXXFLAGS="-stdlib=libc++"
+
 # go
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
@@ -99,3 +105,5 @@ eval "$(direnv hook zsh)"
 alias activate='deactivate &>/dev/null & ; source .venv/bin/activate'
 
 eval "$(starship init zsh)"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
