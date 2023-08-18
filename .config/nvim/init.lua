@@ -11,14 +11,13 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-Config = { theme = "nordic", lsp = { highlight = true } }
+Config = { theme = "nordic", lsp = { highlight = true }, completion_provider = "cmp" }
 
 require("config.lazy")
 
 -- Mappings
 vim.g.mapleader = ","
 
--- LSP
 vim.o.hidden = true
 vim.o.updatetime = 300
 vim.o.backup = false
@@ -34,6 +33,8 @@ vim.o.signcolumn = "yes"
 vim.o.cmdheight = 1
 vim.o.termguicolors = true
 vim.cmd.colorscheme(Config.theme)
+vim.o.fillchars = "eob: "
+vim.o.laststatus = 3
 
 -- Search behavior
 vim.o.incsearch = true
@@ -64,3 +65,15 @@ vim.o.expandtab = true
 vim.o.title = true
 vim.o.scrolloff = 8
 vim.o.exrc = true
+vim.o.confirm = true
+
+-- Remaps
+-- Enter changes word
+vim.keymap.set("n", "<cr>", "ciw")
+
+-- Use <Tab> to cycle through buffers in tab
+vim.keymap.set("n", "<Tab>", "<C-W>w")
+vim.keymap.set("n", "<S-Tab>", "<C-W>W")
+
+-- Easily resume telescope searches
+vim.keymap.set("n", ";", "<cmd>lua require('telescope.builtin').resume(require('telescope.themes').get_ivy({}))<cr>")

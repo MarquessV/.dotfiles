@@ -2,20 +2,52 @@ require("lazy").setup({
 	-- Plugin Dependency Management
 	{
 		"williamboman/mason.nvim",
-		dependencies = { "williamboman/mason-lspconfig.nvim", "WhoIsSethDaniel/mason-tool-installer.nvim" },
+		build = ":MasonUpdate",
+		dependencies = {
+			"williamboman/mason-lspconfig.nvim",
+			"WhoIsSethDaniel/mason-tool-installer.nvim",
+			"jayp0521/mason-null-ls.nvim",
+		},
 		config = function()
 			require("config.mason")
 		end,
+		lazy = false,
+		priority = 49,
 	},
-
-	-- Load config faster
-	{ "lewis6991/impatient.nvim", lazy = false, priority = 100 },
 
 	-- UI Improvements
 	{
 		"stevearc/dressing.nvim",
 		config = function()
 			require("config.dressing")
+		end,
+	},
+
+	{
+		"folke/noice.nvim",
+		config = function()
+			require("config.noice")
+		end,
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			-- "rcarriga/nvim-notify",
+		},
+		enabled = false,
+	},
+
+	{
+		"echasnovski/mini.animate",
+		version = false,
+		config = function()
+			require("config.mini-animate")
+		end,
+	},
+
+	{
+		"echasnovski/mini.sessions",
+		version = false,
+		config = function()
+			require("mini.sessions").setup({ autoread = false, autowrite = true })
 		end,
 	},
 
@@ -40,10 +72,20 @@ require("lazy").setup({
 			require("config.lualine")
 		end,
 	},
+
+	-- Pipe location from lsp to lualine
 	{ "SmiteshP/nvim-navic", dependencies = { "neovim/nvim-lspconfig" } },
 
+	-- LSP status
 	{
-		"TimUntersberger/neogit",
+		"j-hui/fidget.nvim",
+		config = function()
+			require("config.fidget")
+		end,
+	},
+
+	{
+		"NeogitOrg/neogit",
 		dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" },
 		config = function()
 			require("config.neogit")
@@ -64,6 +106,8 @@ require("lazy").setup({
 		config = function()
 			require("config.lsp")
 		end,
+		lazy = false,
+		priority = 50,
 	},
 
 	{
@@ -78,10 +122,19 @@ require("lazy").setup({
 		-- since they are related, config is in config.lsp
 	},
 
+	-- Copilot
 	{
-		"simrat39/symbols-outline.nvim",
+		"zbirenbaum/copilot.lua",
 		config = function()
-			require("config.symbols-outline")
+			require("config.copilot")
+		end,
+	},
+
+	{
+		"zbirenbaum/copilot-cmp",
+		dependencies = { "zbirenbaum/copilot.lua" },
+		config = function()
+			require("copilot_cmp").setup()
 		end,
 	},
 
@@ -102,8 +155,16 @@ require("lazy").setup({
 	-- Really just a preconfigured LSP, so init is in `config.lsp`
 	{ "simrat39/rust-tools.nvim" },
 
-	-- Kotlin
-	{ "udalov/kotlin-vim" },
+	{
+		"Saecki/crates.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		event = { "BufRead Cargo.toml" },
+		config = function()
+			require("crates").setup()
+		end,
+	},
 
 	-- Better Quickfix List
 	{
@@ -114,8 +175,8 @@ require("lazy").setup({
 		end,
 	},
 
-	-- LSP Setting management, config in lsp.lua
-	{ "folke/neoconf.nvim" },
+	-- Completion for neovim lua - config in lsp.lua
+	{ "folke/neodev.nvim" },
 
 	-- Unit Tests
 	{
@@ -134,25 +195,42 @@ require("lazy").setup({
 	},
 
 	-- Debugging
-	{ "mfussenegger/nvim-dap" },
+	{
+		"mfussenegger/nvim-dap",
+		config = function()
+			require("config.nvim-dap")
+		end,
+		lazy = false,
+		dependencies = {
+			{ "rcarriga/nvim-dap-ui", lazy = false },
+			{ "theHamsta/nvim-dap-virtual-text", lazy = false },
+			{ "mfussenegger/nvim-dap-python", lazy = false },
+		},
+	},
 
 	-- Completion
 	{
 		"hrsh7th/nvim-cmp",
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-nvim-lsp-signature-help",
 			"hrsh7th/cmp-nvim-lua",
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
 			"hrsh7th/cmp-cmdline",
+			"petertriho/cmp-git",
 			"L3MON4D3/LuaSnip",
 			"saadparwaiz1/cmp_luasnip",
 			"onsails/lspkind-nvim",
+			"rafamadriz/friendly-snippets",
 		},
 		config = function()
 			require("config.nvim-cmp")
 		end,
+	},
+
+	{
+		"ray-x/lsp_signature.nvim",
+		-- config in lsp.lua.on_attach
 	},
 
 	-- Keymap documentation
@@ -162,9 +240,6 @@ require("lazy").setup({
 			require("config.which-key")
 		end,
 	},
-
-	-- Completion for neovim lua - config in lsp.lua
-	{ "folke/neodev.nvim" },
 
 	-- Autopairs
 	{
@@ -203,11 +278,16 @@ require("lazy").setup({
 			require("config.telescope")
 		end,
 	},
-	-- Config w/ Telescope
-	{ "nvim-telescope/telescope-file-browser.nvim" },
+	{
+		"nvim-telescope/telescope-file-browser.nvim",
+	},
 
-	-- Interactive scratchpad
-	{ "metakirby5/codi.vim" },
+	{
+		"stevearc/overseer.nvim",
+		config = function()
+			require("config.overseer")
+		end,
+	},
 
 	{
 		"ggandor/leap.nvim",
@@ -216,45 +296,25 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Smooth scrolling
 	{
-		"karb94/neoscroll.nvim",
+		"ThePrimeagen/harpoon",
 		config = function()
-			require("config.neoscroll")
+			require("config.harpoon")
 		end,
-	},
-
-	-- Colorscheme
-	{
-		"neanias/everforest-nvim",
-		config = function()
-			require("config.everforest")
-		end,
-	},
-
-	{
-		"https://github.com/AlexvZyl/nordic.nvim",
-		config = function()
-			require("config.nordic")
-		end,
-	},
-
-	{
-		"folke/noice.nvim",
-		config = function()
-			require("config.noice")
-		end,
-		dependencies = {
-			"MunifTanjim/nui.nvim",
-			"rcarriga/nvim-notify",
-		},
 	},
 
 	-- Markdown Previews
-	{ "ellisonleao/glow.nvim" },
+	{
+		"ellisonleao/glow.nvim",
+		config = true,
+		cmd = "Glow",
+	},
 
 	-- Kitty support
-	{ "fladson/vim-kitty" }, -- config syntax highlighting
+	{
+		"fladson/vim-kitty", -- config syntax highlighting
+	},
+
 	{ "knubie/vim-kitty-navigator", build = "cp ./*.py ~/.config/kitty/" },
 
 	-- Show color of hex codes
@@ -267,6 +327,17 @@ require("lazy").setup({
 		config = function()
 			require("config.surround")
 		end,
+	},
+
+	-- Colorschemes
+	{
+		"https://github.com/AlexvZyl/nordic.nvim",
+		config = function()
+			require("config.nordic")
+		end,
+		lazy = false,
+		priority = 99,
+		enabled = Config.theme == "nordic",
 	},
 }, {
 	lazy = true,

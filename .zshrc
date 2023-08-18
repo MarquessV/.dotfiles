@@ -39,7 +39,6 @@ plugins=(
   yarn
   timer
   vi-mode
-  zsh-autosuggestions
   zsh-syntax-highlighting
 )
 
@@ -81,6 +80,7 @@ eval "$(pyenv init -)"
 export NVM_DIR="$HOME/.nvm" # Node
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+export PATH="/Users/mvaldez/.local/share/bob/nvim-bin:$PATH"
 
 # Aliases
 alias vim=nvim

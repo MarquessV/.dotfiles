@@ -8,3 +8,7 @@ neoconf.json
 .nvim.lua
 .nvimrc
 .exrc
+
+# devlogs
+devlog.md
+.vale.ini

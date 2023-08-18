@@ -1,5 +1,10 @@
 local wk = require("which-key")
 
+local function toggle_lsp_lines()
+	local current = vim.diagnostic.config().virtual_lines
+	vim.diagnostic.config({ virtual_lines = not current, virtual_text = current })
+end
+
 wk.setup({
 	plugins = {
 		marks = true,
@@ -38,11 +43,11 @@ wk.setup({
 
 local nmaps = {
 	["<C-a>"] = { "ggVG", "Select All" },
-	["<C-p>"] = { "<cmd>Telescope find_files<CR>", "Find files" },
+	["<C-p>"] = { "<cmd>Telescope find_files hidden=true<CR>", "Find files" },
 	["<Tab>"] = { "<cmd>bn<CR>", "Next Buffer" },
 	["<S-Tab>"] = { "<cmd>bp<CR>", "Prev Buffer" },
 	["<C-s>"] = { "<cmd>w<CR>", "Write Buffer" },
-	["-"] = { "<cmd>Telescope file_browser path=%:p:h<CR>", "File Browser" },
+	["-"] = { "<cmd>Telescope file_browser path=%:p:h hidden=true<CR>", "File Browser" },
 	["<Space>"] = { "za", "Toggle Fold" },
 	["<leader>"] = {
 		c = { name = "Comment", c = { "<cmd>CommentToggle<CR>", "Comment Line" } },
@@ -71,28 +76,97 @@ local nmaps = {
 				"Test Function",
 			},
 			f = {
-				["<leader>tf"] = {
-					'<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<CR>',
-					"Test File",
-				},
+				'<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<CR>',
+				"Test File",
 			},
 			a = {
 				'<cmd>lua require("neotest").run.run(vim.fn.getcwd())<CR>',
 				"Test All",
 			},
 			s = {
-				'<cmd> lua require("neotest").summary.toggle()<CR>',
+				'<cmd>lua require("neotest").summary.toggle()<CR>',
 				"Toggle Test Summary",
+			},
+			o = {
+				'<cmd>lua require("neotest").output_panel.toggle()<CR>',
+				"Toggle Test Output Panel",
+			},
+			x = {
+				'<cmd>lua require("neotest").output.open({enter = true, auto_close = true})<CR>',
+				"Toggle Test Output Window",
 			},
 		},
 		x = {
 			t = {
-				"<CMD>lua require('lsp_lines').toggle()<CR>",
+				function()
+					toggle_lsp_lines()
+				end,
 				"Toggle lsp_lines",
 			},
 		},
+		d = {
+			name = "Debugging",
+			c = { ":lua require('dap').continue()<cr>", "Continue" },
+			s = { ":lua require('dap').step_over()<cr>", "Step Over" },
+			i = { ":lua require('dap').step_into()<cr>", "Step Into" },
+			o = { ":lua require('dap').step_out()<cr>", "Step Out" },
+			b = { ":lua require('dap').toggle_breakpoint()<cr>", "Toggle Breakpoint" },
+			B = {
+				":lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>",
+				"Set Breakpoint w/ Condition",
+			},
+			r = { ":lua require('dap').repl.open()<cr>", "Open REPL" },
+			u = { ":lua require('dapui').toggle()<cr>", "Toggle DAP UI" },
+			q = { ":lua require('dap').terminate()<cr>", "Quit DAP session" },
+			t = {
+				name = "Tests",
+				l = {
+					'<cmd>lua require("neotest").run.run({strategy = "dap"})<CR>',
+					"Test Function",
+				},
+				f = {
+					'<cmd>lua require("neotest").run.run(vim.fn.expand("%"), {strategy = "dap"})<CR>',
+					"Test File",
+				},
+				a = {
+					'<cmd>lua require("neotest").run.run(vim.fn.getcwd(), {strategy = "dap"})<CR>',
+					"Test All",
+				},
+			},
+		},
+		o = {
+			name = "Overseer",
+			t = { "<cmd>OverseerToggle<CR>", "Toggle Overseer panel" },
+			r = { "<cmd>OverseerRun<CR>", "Run task" },
+			s = { "<cmd>OverseerRunCmd<CR>", "Run shell command" },
+			p = { "<cmd>OverseerQuickAction restart<CR>", "Re-run previous command" },
+		},
 		["<Space>"] = { ":nohlsearch<CR>", "Clear Highlights" },
 		["<Tab>"] = { "<cmd>Telescope buffers<CR>", "Show Buffers" },
+	},
+	["]q"] = {
+		function()
+			require("trouble").next({ skip_groups = true, jump = true })
+		end,
+		"Next Trouble entry",
+	},
+	["]Q"] = { -- jump to the last item, skipping the groups
+		function()
+			require("trouble").last({ skip_groups = true, jump = true })
+		end,
+		"Next Trouble entry",
+	},
+	["[q"] = {
+		function()
+			require("trouble").previous({ skip_groups = true, jump = true })
+		end,
+		"Previous Trouble entry",
+	},
+	["[Q"] = { -- jump to the last item, skipping the groups
+		function()
+			require("trouble").first({ skip_groups = true, jump = true })
+		end,
+		"First Trouble entry",
 	},
 }
 

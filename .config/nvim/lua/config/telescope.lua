@@ -27,11 +27,12 @@ require("telescope").setup({
 		sorting_strategy = "ascending",
 		layout_strategy = "horizontal",
 		file_sorter = require("telescope.sorters").get_fuzzy_file,
-		file_ignore_patterns = { "\\.out", "vendor" },
+		file_ignore_patterns = { "%.out", "vendor", "^%.git/", "^%.mypy-cache/" },
 		generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
 		path_display = { truncate = 1 },
 		winblend = 0,
 		border = true,
+		borderchars = { "▔", "▕", "▁", "▏", "🭽", "🭾", "🭿", "🭼" },
 		color_devicons = true,
 		dynamic_preview_title = true,
 		set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
@@ -82,3 +83,4 @@ require("telescope").setup({
 
 require("telescope").load_extension("fzy_native")
 require("telescope").load_extension("file_browser")
+require("telescope").load_extension("harpoon")

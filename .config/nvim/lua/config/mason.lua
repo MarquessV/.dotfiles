@@ -12,11 +12,10 @@ require("mason-lspconfig").setup({
 require("mason-tool-installer").setup({
 	ensure_installed = {
 		"golangci-lint",
-		"delve",
 		"stylua",
-		"hadolint",
 		"flake8",
 		"black",
+		"mypy",
+		"ruff",
 	},
-	run_on_start = true,
 })
