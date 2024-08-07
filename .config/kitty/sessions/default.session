@@ -1,13 +1,13 @@
 # dev
 new_tab 
-layout tall:bias=70
-cd ~/Repos
+layout tall:bias=30
+cd ~/dev
 launch zsh
 launch zsh
 
 # configs
 new_tab 
-layout tall:bias=70
+layout tall:bias=30
 cd ~/.config/nvim/
 launch zsh
 cd ~/.config/kitty
